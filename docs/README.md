@@ -57,4 +57,4 @@ It allows you to add, remove, view, and check student records using interactive 
 
 ----------------------------------------------------------------------------------------------------------------
 #Notes
-The list is temporary
+The list is temporary.
