@@ -1,19 +1,42 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMS-Project</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
-    <h1>Student Information Management System</h1>
-    
+    <div class="container">
+        <header>
+            <h1>Student Information Management System</h1>
+        </header>
+        
+        <section class="controls">
+            <div class="input-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" placeholder="Enter student name">
+            </div>
+            <div class="button-group">
+                <button id="addBtn" data-action="add">Add Student</button>
+                <button id="removeBtn" data-action="remove">Remove Last Student</button>
+            </div>
+        </section>
+
+        <section class="students-section">
+            <h2>Student List</h2>
+            <div id="roster" class="students-list">
+            </div>
+        </section>
+
+        <section class="footer">
+            <button id="resetBtn" class="btn-reset">Reset All</button>
+        </section>
+    </div>
+
     <script src="main.js"></script>
     <script src="studentManager.js"></script>
     <script src="domHandlers.js"></script>
     <script src="validation.js"></script>
-    
 </body>
 </html>
