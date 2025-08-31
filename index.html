@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,30 +8,32 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Student Information Management System</h1>
-        </header>
+        <h1>Student Information Management System</h1>
         
-        <section class="controls">
+        <div class="input-section">
             <div class="input-group">
-                <label for="studentName">Student Name</label>
-                <input type="text" id="studentName" placeholder="Enter student name">
+                <input type="text" id="studentName" placeholder="Enter student name..." maxlength="50">
+                <input type="number" id="positionInput" placeholder="Position (1-based)" min="1" style="max-width: 200px;">
             </div>
-            <div class="button-group">
-                <button id="addBtn" data-action="add">Add Student</button>
-                <button id="removeBtn" data-action="remove">Remove Last Student</button>
+            
+            <div class="button-grid">
+                <button class="btn-primary" onclick="addStudent()">Add Student</button>
+                <button class="btn-danger" onclick="removeLastStudent()">Remove Last Student</button>
+                <button class="btn-info" onclick="displayAllStudents()">Display All Students</button>
+                <button class="btn-success" onclick="showStudentCount()">Show Student Count</button>
+                <button class="btn-warning" onclick="showStudentAtPosition()">Show Student at Position</button>
+                <button class="btn-info" onclick="joinStudentNames()">Join Student Names</button>
             </div>
-        </section>
-
-        <section class="students-section">
-            <h2>Student List</h2>
-            <div id="roster" class="students-list">
+        </div>
+        
+        <div class="results-section">
+            <h3>Results</h3>
+            <div id="results">
+                <div class="empty-state">
+                    No students added yet. Start by adding some students!
+                </div>
             </div>
-        </section>
-
-        <section class="footer">
-            <button id="resetBtn" class="btn-reset">Reset All</button>
-        </section>
+        </div>
     </div>
 
     <script src="main.js"></script>
