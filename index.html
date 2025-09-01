@@ -74,7 +74,8 @@
         <div class="results-container">
           <div id="results">
             <div class="empty-state">
-              No students added yet. Start by adding some students!
+              <div class="icon">🚀</div>
+              <p>Ready to launch! Add your first student to begin.</p>
             </div>
           </div>
         </div>
@@ -118,20 +119,19 @@
       const position = parseInt(positionInput.value);
 
       if (!name) {
-        showMessage('Please enter a student name.', 'error');
+        showMessage('🚫 Please enter a student name to proceed.', 'error');
         nameInput.focus();
         return;
       }
 
       if (name.length > 50) {
-        showMessage('Student name must be 50 characters or less.', 'error');
+        showMessage('📏 Student name must be 50 characters or less.', 'error');
         nameInput.focus();
         return;
       }
 
-      // Check if student already exists
       if (students.some(student => student.name.toLowerCase() === name.toLowerCase())) {
-        showMessage('A student with this name already exists.', 'error');
+        showMessage('👥 A student with this name already exists in the system.', 'error');
         nameInput.focus();
         return;
       }
@@ -148,7 +148,7 @@
         students.push(student);
       }
 
-      showMessage(`Student "${name}" added successfully!`, 'success');
+      showMessage(`✨ Student "${name}" has been successfully added to the system!`, 'success');
       nameInput.value = '';
       positionInput.value = '';
       nameInput.focus();
@@ -156,28 +156,28 @@
 
     function removeLastStudent() {
       if (students.length === 0) {
-        showMessage('No students to remove.', 'error');
+        showMessage('📭 No students available to remove from the system.', 'error');
         return;
       }
 
       const removedStudent = students.pop();
-      showMessage(`Student "${removedStudent.name}" removed successfully!`, 'success');
+      showMessage(`🗑️ Student "${removedStudent.name}" has been removed from the system.`, 'success');
     }
 
     function displayAllStudents() {
       if (students.length === 0) {
-        showMessage('No students to display.', 'info');
+        showMessage('📋 No students found in the system database.', 'info');
         return;
       }
 
       const results = document.getElementById('results');
       results.innerHTML = `
         <div class="student-list">
-          <h3>All Students (${students.length} total)</h3>
+          <h3>🎓 Complete Student Registry (${students.length} ${students.length === 1 ? 'student' : 'students'})</h3>
           <table class="student-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th>Position</th>
                 <th>Student Name</th>
               </tr>
             </thead>
@@ -194,12 +194,14 @@
       `;
     }
 
+
     function showStudentCount() {
       const count = students.length;
-      const message = count === 0 
-        ? 'No students in the system.' 
-        : `Total students: ${count}`;
-      showMessage(message, 'info');
+      if (count === 0) {
+        showMessage('🔢 No students currently registered in the system.', 'info');
+      } else {
+        showMessage(`📊 Total students in database: ${count} ${count === 1 ? 'student' : 'students'}`, 'info');
+      }
     }
 
     function showStudentAtPosition() {
@@ -207,24 +209,24 @@
       const position = parseInt(positionInput.value);
 
       if (!position || position < 1) {
-        showMessage('Please enter a valid position (1 or greater).', 'error');
+        showMessage('🎯 Please enter a valid position number (1 or greater).', 'error');
         positionInput.focus();
         return;
       }
 
       if (position > students.length) {
-        showMessage(`Position ${position} is out of range. There are only ${students.length} students.`, 'error');
+        showMessage(`📍 Position ${position} is out of range. Database contains ${students.length} ${students.length === 1 ? 'student' : 'students'}.`, 'error');
         return;
       }
 
       const student = students[position - 1];
-      showMessage(`Student at position ${position}: ${student.name}`, 'info');
+      showMessage(`🎯 Student at position ${position}: "${student.name}"`, 'info');
       positionInput.value = '';
     }
 
     function joinStudentNames() {
       if (students.length === 0) {
-        showMessage('No students to join.', 'error');
+        showMessage('🔗 No students available to join in the system.', 'error');
         return;
       }
 
@@ -232,14 +234,13 @@
       const results = document.getElementById('results');
       results.innerHTML = `
         <div class="student-list">
-          <h3>All Student Names</h3>
-          <div style="padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-md); color: var(--text-secondary); font-style: italic; border-left: 4px solid var(--primary-color);">
+          <h3>🔗 Joined Student Names</h3>
+          <div class="names-display">
             ${names}
           </div>
         </div>
       `;
     }
-
     // Keyboard shortcuts
     document.addEventListener('keydown', function(event) {
       if (event.ctrlKey || event.metaKey) {
