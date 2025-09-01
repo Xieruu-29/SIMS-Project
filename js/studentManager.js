@@ -40,20 +40,35 @@ function removeLastStudent() {
 // Display all students
 function displayAllStudents() {
     if (students.length === 0) {
-        showMessage('No students in the list!', 'info');
+        showMessage('No students in the list!', 'error');
         return;
     }
     
-    const studentList = students.map((student, index) => 
-        `${index + 1}. ${student}`
-    ).join('<br>');
+    const studentList = `
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${students.map((student, index) =>
+                    `<tr>
+                        <td>${index + 1}</td>
+                        <td>${student}</td>
+                    </tr>`
+                ).join('')}
+            </tbody>
+        </table>
+    `;
     
     showMessage(`All Students:<br>${studentList}`, 'info');
 }
 
 // Show total count of students
 function showStudentCount() {
-    showMessage(`Total students: ${students.length}`, 'info');
+    showMessage(`Total Students: ${students.length}`, 'info');
 }
 
 // Show student at specific position
@@ -79,3 +94,4 @@ function joinStudentNames() {
     const joinedNames = students.join(', ');
     showMessage(`Joined names: ${joinedNames}`, 'info');
 }
+
