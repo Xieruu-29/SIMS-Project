@@ -122,6 +122,41 @@ main {
   font-style: italic;
 }
 
+/* Message styles */
+.message {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.message.success {
+  background: #4caf50;
+  color: white;
+}
+
+.message.error {
+  background: #f44336;
+  color: white;
+}
+
+.message.info {
+  background: #2196f3;
+  color: white;
+}
+
+/* Student list styles */
+.student-list h3 {
+  color: #00d2ff;
+  margin-bottom: 10px;
+}
+
+.student-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #37474f;
+  color: #e0f7fa;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   main {
