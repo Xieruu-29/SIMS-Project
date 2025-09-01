@@ -4,30 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SIMS - Unique Design</title>
-  <!-- External stylesheet for design -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="wrapper">
-    <!-- ================= HEADER ================= -->
     <header>
       <h1>Student Information Management System</h1>
       <p class="subtitle">Manage and track your student records efficiently</p>
     </header>
 
-    <!-- ================= MAIN CONTENT ================= -->
     <main>
-      <!-- Student Input Section -->
       <section class="input-card">
         <h2>Student Input</h2>
-        
-        <!-- Input fields for name and position -->
         <div class="form-group">
           <input type="text" id="studentName" placeholder="Enter student name..." maxlength="50">
           <input type="number" id="positionInput" placeholder="Position (1-based)" min="1">
         </div>
-
-        <!-- Button panel for student actions -->
         <div class="button-panel">
           <button class="btn teal" onclick="addStudent()">Add Student</button>
           <button class="btn red" onclick="removeLastStudent()">Remove Last</button>
@@ -38,25 +30,18 @@
         </div>
       </section>
 
-      <!-- Results display section -->
       <section class="results-card">
         <h2>Results</h2>
         <div id="results">
-          <!-- Placeholder message when no students exist -->
           <div class="empty-state">No students added yet. Start by adding some students!</div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- ================= JAVASCRIPT FILES ================= -->
-  <!-- Script for main functionality -->
   <script src="main.js"></script>
-  <!-- Script for managing student data -->
   <script src="studentManager.js"></script>
-  <!-- Script for handling DOM updates -->
   <script src="domHandlers.js"></script>
-  <!-- Script for input validation -->
   <script src="validation.js"></script>
 </body>
 </html>

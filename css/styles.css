@@ -1,4 +1,4 @@
-
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -26,24 +26,9 @@ header {
   margin-bottom: 30px;
 }
 
-<<<<<<< HEAD
 header h1 {
   font-size: 2rem;
   color: #00d2ff;
-=======
-h1 {
-    text-align: center;
-    color: #6b5b95;
-    margin-bottom: 40px;
-    font-size: 3rem;
-    font-weight: 600;
-    background: linear-gradient( #c37ea0, #c6a2cc);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
-    letter-spacing: -0.02em;
->>>>>>> 5ae577d357ade76ad834d5adfc9f1ee4582d5bb4
 }
 
 header .subtitle {
