@@ -3,42 +3,287 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIMS - Unique Design</title>
+  <title>SIMS - Enhanced Design</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="wrapper">
-    <header>
+  <div class="container">
+    <header class="header">
       <h1>Student Information Management System</h1>
-      <p class="subtitle">Manage and track your student records efficiently</p>
+      <p>Manage and track your student records with modern efficiency</p>
     </header>
 
-    <main>
-      <section class="input-card">
-        <h2>Student Input</h2>
-        <div class="form-group">
-          <input type="text" id="studentName" placeholder="Enter student name..." maxlength="50">
-          <input type="number" id="positionInput" placeholder="Position (1-based)" min="1">
+    <main class="main-grid">
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            📝 Student Input
+          </h2>
         </div>
-        <div class="button-panel">
-          <button class="btn teal" onclick="addStudent()">Add Student</button>
-          <button class="btn red" onclick="removeLastStudent()">Remove Last</button>
-          <button class="btn blue" onclick="displayAllStudents()">Display All</button>
-          <button class="btn green" onclick="showStudentCount()">Show Count</button>
-          <button class="btn yellow" onclick="showStudentAtPosition()">Show by Position</button>
-          <button class="btn purple" onclick="joinStudentNames()">Join Names</button>
+        
+        <div class="form-group">
+          <div class="input-group">
+            <input 
+              type="text" 
+              id="studentName" 
+              class="input"
+              placeholder="Enter student name..." 
+              maxlength="50"
+              autocomplete="off"
+            >
+            <input 
+              type="number" 
+              id="positionInput" 
+              class="input"
+              placeholder="Position (1-based)" 
+              min="1"
+              autocomplete="off"
+            >
+          </div>
+        </div>
+        
+        <div class="button-grid">
+          <button class="btn btn-primary" onclick="addStudent()">
+            Add Student
+          </button>
+          <button class="btn btn-danger" onclick="removeLastStudent()">
+            Remove Last
+          </button>
+          <button class="btn btn-info" onclick="displayAllStudents()">
+            Display All
+          </button>
+          <button class="btn btn-success" onclick="showStudentCount()">
+            Show Count
+          </button>
+          <button class="btn btn-warning" onclick="showStudentAtPosition()">
+            Show Position
+          </button>
+          <button class="btn btn-purple" onclick="joinStudentNames()">
+            Join Names
+          </button>
         </div>
       </section>
 
-      <section class="results-card">
-        <h2>Results</h2>
-        <div id="results">
-          <div class="empty-state">No students added yet. Start by adding some students!</div>
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            📊 Results
+          </h2>
+        </div>
+        
+        <div class="results-container">
+          <div id="results">
+            <div class="empty-state">
+              No students added yet. Start by adding some students!
+            </div>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <script src="js/main.js"></script>
+  <script>
+    // Student management system
+    let students = [];
+    let nextId = 1;
+
+    function showMessage(message, type = 'info') {
+      const results = document.getElementById('results');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      results.innerHTML = '';
+      results.appendChild(messageDiv);
+      
+      // Auto-remove message after 3 seconds for success/error messages
+      if (type === 'success' || type === 'error') {
+        setTimeout(() => {
+          if (messageDiv.parentNode) {
+            messageDiv.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => {
+              if (messageDiv.parentNode) {
+                results.innerHTML = '<div class="empty-state">No students added yet. Start by adding some students!</div>';
+              }
+            }, 300);
+          }
+        }, 3000);
+      }
+    }
+
+    function addStudent() {
+      const nameInput = document.getElementById('studentName');
+      const positionInput = document.getElementById('positionInput');
+      const name = nameInput.value.trim();
+      const position = parseInt(positionInput.value);
+
+      if (!name) {
+        showMessage('Please enter a student name.', 'error');
+        nameInput.focus();
+        return;
+      }
+
+      if (name.length > 50) {
+        showMessage('Student name must be 50 characters or less.', 'error');
+        nameInput.focus();
+        return;
+      }
+
+      // Check if student already exists
+      if (students.some(student => student.name.toLowerCase() === name.toLowerCase())) {
+        showMessage('A student with this name already exists.', 'error');
+        nameInput.focus();
+        return;
+      }
+
+      const student = { 
+        id: nextId++, 
+        name: name,
+        addedAt: new Date().toLocaleString()
+      };
+
+      if (position && position > 0 && position <= students.length + 1) {
+        students.splice(position - 1, 0, student);
+      } else {
+        students.push(student);
+      }
+
+      showMessage(`Student "${name}" added successfully!`, 'success');
+      nameInput.value = '';
+      positionInput.value = '';
+      nameInput.focus();
+    }
+
+    function removeLastStudent() {
+      if (students.length === 0) {
+        showMessage('No students to remove.', 'error');
+        return;
+      }
+
+      const removedStudent = students.pop();
+      showMessage(`Student "${removedStudent.name}" removed successfully!`, 'success');
+    }
+
+    function displayAllStudents() {
+      if (students.length === 0) {
+        showMessage('No students to display.', 'info');
+        return;
+      }
+
+      const results = document.getElementById('results');
+      results.innerHTML = `
+        <div class="student-list">
+          <h3>All Students (${students.length} total)</h3>
+          <table class="student-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Student Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${students.map((student, index) => `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${student.name}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function showStudentCount() {
+      const count = students.length;
+      const message = count === 0 
+        ? 'No students in the system.' 
+        : `Total students: ${count}`;
+      showMessage(message, 'info');
+    }
+
+    function showStudentAtPosition() {
+      const positionInput = document.getElementById('positionInput');
+      const position = parseInt(positionInput.value);
+
+      if (!position || position < 1) {
+        showMessage('Please enter a valid position (1 or greater).', 'error');
+        positionInput.focus();
+        return;
+      }
+
+      if (position > students.length) {
+        showMessage(`Position ${position} is out of range. There are only ${students.length} students.`, 'error');
+        return;
+      }
+
+      const student = students[position - 1];
+      showMessage(`Student at position ${position}: ${student.name}`, 'info');
+      positionInput.value = '';
+    }
+
+    function joinStudentNames() {
+      if (students.length === 0) {
+        showMessage('No students to join.', 'error');
+        return;
+      }
+
+      const names = students.map(student => student.name).join(', ');
+      const results = document.getElementById('results');
+      results.innerHTML = `
+        <div class="student-list">
+          <h3>All Student Names</h3>
+          <div style="padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-md); color: var(--text-secondary); font-style: italic; border-left: 4px solid var(--primary-color);">
+            ${names}
+          </div>
+        </div>
+      `;
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(event) {
+      if (event.ctrlKey || event.metaKey) {
+        switch(event.key) {
+          case 'Enter':
+            event.preventDefault();
+            addStudent();
+            break;
+          case 'Backspace':
+            event.preventDefault();
+            removeLastStudent();
+            break;
+          case 'd':
+            event.preventDefault();
+            displayAllStudents();
+            break;
+        }
+      }
+    });
+
+    // Auto-focus name input on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('studentName').focus();
+    });
+
+    // Enter key handling for inputs
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('studentName').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          addStudent();
+        }
+      });
+
+      document.getElementById('positionInput').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          const positionValue = this.value;
+          if (positionValue) {
+            showStudentAtPosition();
+          } else {
+            addStudent();
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
