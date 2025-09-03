@@ -81,7 +81,9 @@ function showStudentAtPosition() {
         return;
     }
     
-    showMessage(`Student at position ${position + 1}: ${students[position]}`, 'info');
+    const student = students.at(position);
+    showMessage(`Student at position ${position + 1}: ${student}`, 'info');
+    positionInput.value = ''; // clear input after use
 }
 
 // Join all student names
