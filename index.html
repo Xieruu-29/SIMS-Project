@@ -3,288 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIMS - Enhanced Design</title>
+  <title>SIMS - Unique Design</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="container">
-    <header class="header">
+  <div class="wrapper">
+    <header>
       <h1>Student Information Management System</h1>
-      <p>Manage and track your student records with modern efficiency</p>
+      <p class="subtitle">Manage and track your student records efficiently</p>
     </header>
 
-    <main class="main-grid">
-      <section class="card">
-        <div class="card-header">
-          <h2 class="card-title">
-            📝 Student Input
-          </h2>
-        </div>
-        
+    <main>
+      <section class="input-card">
+        <h2>Student Input</h2>
         <div class="form-group">
-          <div class="input-group">
-            <input 
-              type="text" 
-              id="studentName" 
-              class="input"
-              placeholder="Enter student name..." 
-              maxlength="50"
-              autocomplete="off"
-            >
-            <input 
-              type="number" 
-              id="positionInput" 
-              class="input"
-              placeholder="Position (1-based)" 
-              min="1"
-              autocomplete="off"
-            >
-          </div>
+          <input type="text" id="studentName" placeholder="Enter student name..." maxlength="50">
+          <input type="number" id="positionInput" placeholder="Position (1-based)" min="1">
         </div>
-        
-        <div class="button-grid">
-          <button class="btn btn-primary" onclick="addStudent()">
-            Add Student
-          </button>
-          <button class="btn btn-danger" onclick="removeLastStudent()">
-            Remove Last
-          </button>
-          <button class="btn btn-info" onclick="displayAllStudents()">
-            Display All
-          </button>
-          <button class="btn btn-success" onclick="showStudentCount()">
-            Show Count
-          </button>
-          <button class="btn btn-warning" onclick="showStudentAtPosition()">
-            Show Position
-          </button>
-          <button class="btn btn-purple" onclick="joinStudentNames()">
-            Join Names
-          </button>
+        <div class="button-panel">
+          <button class="btn teal" onclick="addStudent()">Add Student</button>
+          <button class="btn red" onclick="removeLastStudent()">Remove Last</button>
+          <button class="btn blue" onclick="displayAllStudents()">Display All</button>
+          <button class="btn green" onclick="showStudentCount()">Show Count</button>
+          <button class="btn yellow" onclick="showStudentAtPosition()">Show by Position</button>
+          <button class="btn purple" onclick="joinStudentNames()">Join Names</button>
         </div>
       </section>
 
-      <section class="card">
-        <div class="card-header">
-          <h2 class="card-title">
-            📊 Results
-          </h2>
-        </div>
-        
-        <div class="results-container">
-          <div id="results">
-            <div class="empty-state">
-              <div class="icon">🚀</div>
-              <p>Ready to launch! Add your first student to begin.</p>
-            </div>
-          </div>
+      <section class="results-card">
+        <h2>Results</h2>
+        <div id="results">
+          <div class="empty-state">No students added yet. Start by adding some students!</div>
         </div>
       </section>
     </main>
   </div>
 
-  <script>
-    // Student management system
-    let students = [];
-    let nextId = 1;
-
-    function showMessage(message, type = 'info') {
-      const results = document.getElementById('results');
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${type}`;
-      messageDiv.textContent = message;
-      
-      results.innerHTML = '';
-      results.appendChild(messageDiv);
-      
-      // Auto-remove message after 3 seconds for success/error messages
-      if (type === 'success' || type === 'error') {
-        setTimeout(() => {
-          if (messageDiv.parentNode) {
-            messageDiv.style.animation = 'slideOut 0.3s ease-in';
-            setTimeout(() => {
-              if (messageDiv.parentNode) {
-                results.innerHTML = '<div class="empty-state">No students added yet. Start by adding some students!</div>';
-              }
-            }, 300);
-          }
-        }, 3000);
-      }
-    }
-
-    function addStudent() {
-      const nameInput = document.getElementById('studentName');
-      const positionInput = document.getElementById('positionInput');
-      const name = nameInput.value.trim();
-      const position = parseInt(positionInput.value);
-
-      if (!name) {
-        showMessage('🚫 Please enter a student name to proceed.', 'error');
-        nameInput.focus();
-        return;
-      }
-
-      if (name.length > 50) {
-        showMessage('📏 Student name must be 50 characters or less.', 'error');
-        nameInput.focus();
-        return;
-      }
-
-      if (students.some(student => student.name.toLowerCase() === name.toLowerCase())) {
-        showMessage('👥 A student with this name already exists in the system.', 'error');
-        nameInput.focus();
-        return;
-      }
-
-      const student = { 
-        id: nextId++, 
-        name: name,
-        addedAt: new Date().toLocaleString()
-      };
-
-      if (position && position > 0 && position <= students.length + 1) {
-        students.splice(position - 1, 0, student);
-      } else {
-        students.push(student);
-      }
-
-      showMessage(`✨ Student "${name}" has been successfully added to the system!`, 'success');
-      nameInput.value = '';
-      positionInput.value = '';
-      nameInput.focus();
-    }
-
-    function removeLastStudent() {
-      if (students.length === 0) {
-        showMessage('📭 No students available to remove from the system.', 'error');
-        return;
-      }
-
-      const removedStudent = students.pop();
-      showMessage(`🗑️ Student "${removedStudent.name}" has been removed from the system.`, 'success');
-    }
-
-    function displayAllStudents() {
-      if (students.length === 0) {
-        showMessage('📋 No students found in the system database.', 'info');
-        return;
-      }
-
-      const results = document.getElementById('results');
-      results.innerHTML = `
-        <div class="student-list">
-          <h3>🎓 Complete Student Registry (${students.length} ${students.length === 1 ? 'student' : 'students'})</h3>
-          <table class="student-table">
-            <thead>
-              <tr>
-                <th>Position</th>
-                <th>Student Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${students.map((student, index) => `
-                <tr>
-                  <td>${index + 1}</td>
-                  <td>${student.name}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-
-    function showStudentCount() {
-      const count = students.length;
-      if (count === 0) {
-        showMessage('🔢 No students currently registered in the system.', 'info');
-      } else {
-        showMessage(`📊 Total students in database: ${count} ${count === 1 ? 'student' : 'students'}`, 'info');
-      }
-    }
-
-    function showStudentAtPosition() {
-      const positionInput = document.getElementById('positionInput');
-      const position = parseInt(positionInput.value);
-
-      if (!position || position < 1) {
-        showMessage('🎯 Please enter a valid position number (1 or greater).', 'error');
-        positionInput.focus();
-        return;
-      }
-
-      if (position > students.length) {
-        showMessage(`📍 Position ${position} is out of range. Database contains ${students.length} ${students.length === 1 ? 'student' : 'students'}.`, 'error');
-        return;
-      }
-
-      const student = students[position - 1];
-      showMessage(`🎯 Student at position ${position}: "${student.name}"`, 'info');
-      positionInput.value = '';
-    }
-
-    function joinStudentNames() {
-      if (students.length === 0) {
-        showMessage('🔗 No students available to join in the system.', 'error');
-        return;
-      }
-
-      const names = students.map(student => student.name).join(', ');
-      const results = document.getElementById('results');
-      results.innerHTML = `
-        <div class="student-list">
-          <h3>🔗 Joined Student Names</h3>
-          <div class="names-display">
-            ${names}
-          </div>
-        </div>
-      `;
-    }
-    // Keyboard shortcuts
-    document.addEventListener('keydown', function(event) {
-      if (event.ctrlKey || event.metaKey) {
-        switch(event.key) {
-          case 'Enter':
-            event.preventDefault();
-            addStudent();
-            break;
-          case 'Backspace':
-            event.preventDefault();
-            removeLastStudent();
-            break;
-          case 'd':
-            event.preventDefault();
-            displayAllStudents();
-            break;
-        }
-      }
-    });
-
-    // Auto-focus name input on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('studentName').focus();
-    });
-
-    // Enter key handling for inputs
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('studentName').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-          addStudent();
-        }
-      });
-
-      document.getElementById('positionInput').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-          const positionValue = this.value;
-          if (positionValue) {
-            showStudentAtPosition();
-          } else {
-            addStudent();
-          }
-        }
-      });
-    });
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
