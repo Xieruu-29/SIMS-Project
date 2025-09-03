@@ -87,7 +87,7 @@ function showStudentAtPosition() {
 // Join all student names
 function joinStudentNames() {
     if (students.length === 0) {
-        showMessage('No students to join!', 'info');
+        showMessage('No students to join!', 'error');
         return;
     }
     
