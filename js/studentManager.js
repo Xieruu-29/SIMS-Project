@@ -1,23 +1,40 @@
 // Student Management System
 let students = [];
 
+// Helper functions for validation module
+function getAllStudents() {
+    return students;
+}
+
+function getStudentCount() {
+    return students.length;
+}
+
+function isStudentArrayEmpty() {
+    return students.length === 0;
+}
+
 // Add a new student to the array
 function addStudent() {
     const nameInput = document.getElementById('studentName');
-    const studentName = nameInput.value.trim();
+    const studentName = nameInput.value;
     
-    // Basic validation
-    if (studentName === '') {
-        showMessage('Please enter a student name!', 'error');
+    // Use validation module
+    const validation = validateStudentName(studentName);
+    if (!validation.isValid) {
+        showMessage(validation.message, 'error');
         return;
     }
     
+    // Sanitize the input
+    const sanitizedName = sanitizeInput(studentName);
+    
     // Add student to array
-    students.push(studentName);
+    students.push(sanitizedName);
     
     // Clear input and show success message
     nameInput.value = '';
-    showMessage(`Student "${studentName}" added successfully!`, 'success');
+    showMessage(`Student "${sanitizedName}" added successfully!`, 'success');
     
     // Update display
     displayResults();
@@ -25,8 +42,10 @@ function addStudent() {
 
 // Remove the last student from the array
 function removeLastStudent() {
-    if (students.length === 0) {
-        showMessage('No students to remove!', 'error');
+    // Use validation module
+    const validation = validateOperation('remove');
+    if (!validation.canProceed) {
+        showMessage(validation.message, 'error');
         return;
     }
     
@@ -39,8 +58,10 @@ function removeLastStudent() {
 
 // Display all students
 function displayAllStudents() {
-    if (students.length === 0) {
-        showMessage('No students in the list!', 'error');
+    // Use validation module
+    const validation = validateOperation('display');
+    if (!validation.canProceed) {
+        showMessage(validation.message, 'error');
         return;
     }
     
@@ -74,20 +95,25 @@ function showStudentCount() {
 // Show student at specific position
 function showStudentAtPosition() {
     const positionInput = document.getElementById('positionInput');
-    const position = parseInt(positionInput.value) - 1; // Convert to 0-based index
+    const position = positionInput.value;
     
-    if (isNaN(position) || position < 0 || position >= students.length) {
-        showMessage('Please enter a valid position!', 'error');
+    // Use validation module
+    const validation = validatePosition(position, students.length);
+    if (!validation.isValid) {
+        showMessage(validation.message, 'error');
         return;
     }
     
-    showMessage(`Student at position ${position + 1}: ${students[position]}`, 'info');
+    const positionIndex = parseInt(position) - 1; // Convert to 0-based index
+    showMessage(`Student at position ${position}: ${students[positionIndex]}`, 'info');
 }
 
 // Join all student names
 function joinStudentNames() {
-    if (students.length === 0) {
-        showMessage('No students to join!', 'info');
+    // Use validation module
+    const validation = validateOperation('join');
+    if (!validation.canProceed) {
+        showMessage(validation.message, 'error');
         return;
     }
     

@@ -1,4 +1,3 @@
-dom
 // DOM Handler Functions
 
 // Display results in the results section
@@ -42,5 +41,3 @@ function showMessage(message, type = 'info') {
         }, 3000);
     }
 }
-
-
