@@ -92,5 +92,5 @@ function joinStudentNames() {
     }
     
     const joinedNames = students.join(', ');
-    showMessage(`Joined names: ${joinedNames}`, 'info');
+    showMessage(`Joined Names: ${joinedNames}`, 'info');
 }
